@@ -1,0 +1,226 @@
+/* General Identity */
+:root {
+    --orange: #C65A11; /* Color principal del logo */
+    --dark-orange: #A04A0E; /* Versión más oscura para hover */
+    --dark-gray: #333333; /* Color secundario del logo */
+    --light-gray: #f8f8f8; /* Color de fondo para secciones */
+    --white: #FFFFFF;
+    --black: #1A1A1A;
+    --gray: #5A5A5A;
+    --line-height: 1.6;
+    --font-size-base: 1rem;
+    --font-size-md: clamp(0.625rem, 0.305vw + 0.55rem, 0.79rem);
+    --font-size-lg: clamp(0.975rem, 0.625vw + 0.82rem, 1.32rem);
+    --font-size-xl: clamp(1.525rem, 1.4875vw + 1.15625rem, 2.34375rem);
+    --font-family: 'Roboto', sans-serif;
+  }
+  
+  * { 
+    font-family: var(--font-family);
+    line-height: var(--line-height);
+    box-sizing: border-box;
+  }
+  
+  body, html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: var(--font-family);
+    color: var(--black);
+    background-color: var(--white);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--orange);
+    font-weight: bold;
+  }
+  
+  a {
+    color: var(--orange);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  a:hover {
+    color: var(--dark-orange);
+  }
+  
+  .btn {
+    background-color: var(--orange);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn:hover {
+    background-color: var(--dark-orange);
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  
+@media screen and (max-width: 860px) {
+    .container {
+      padding: 0 1rem;
+    }
+  
+}
+
+  .bg-gradient {
+    background: linear-gradient(to bottom, var(--white), var(--light-gray));
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
+  
+  .mb-8 {
+    margin-bottom: 2rem;
+  }
+
+/* public/css/header.css */
+.header {
+    background-color: var(--white);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  .header .logo img {
+    height: 2rem;
+    width: auto;
+  }
+  
+  .header nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .header nav ul li {
+    margin-left: 1.5rem;
+  }
+  
+  .header nav ul li a {
+    color: var(--orange);
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .header nav ul li a:hover {
+    color: var(--dark-orange);
+  }
+
+  /* public/css/index.css */
+.hero {
+    padding: 4rem 0;
+    padding-top: 0;
+    text-align: center;
+  }
+  
+  .hero-logo {
+    max-width: 350px;
+    min-width: 250px;
+
+    flex: 1;
+    flex-shrink: 1;
+  }
+
+  /* Media query for mobile devices */
+@media (max-width: 768px) {
+    .hero-logo {
+      max-width: 100%;
+      width: auto;
+      height: auto;
+    }
+  }
+  
+  .hero h1 {
+    font-size: var(--font-size-xl);
+    margin-bottom: 1rem;
+  }
+  
+  .hero p {
+    font-size: var(--font-size-lg);
+    max-width: 800px;
+    margin: 0 auto 2rem;
+  }
+  
+  .blog {
+    background-color: var(--light-gray);
+    padding: 4rem 0;
+  }
+  
+  .blog h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  
+  .blog-card {
+    background-color: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .blog-card:hover {
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+  }
+  
+  .blog-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .blog-card h3 {
+    font-size: var(--font-size-lg);
+    padding: 1rem;
+    margin: 0;
+  }
+  
+  .blog-card .date {
+    font-size: var(--font-size-md);
+    color: var(--gray);
+    padding: 0 1rem;
+  }
+  
+  .blog-card p {
+    padding: 0 1rem 1rem;
+  }
+
+  /* public/css/footer.css */
+.footer {
+    background-color: var(--dark-gray);
+    color: var(--white);
+    padding: 2rem 0;
+    text-align: center;
+  }
+  
+  .footer p {
+    margin: 0;
+  }
+
