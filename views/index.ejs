@@ -1,27 +1,114 @@
 <!-- views/partials/index.ejs -->
-<main>
+<main class="main">
     <section class="hero bg-gradient">
       <div class="container">
         <img src="/images/Logo RafMarq 0.13 (1).png" alt="RafMarq Logo" class="hero-logo" width="600" height="auto">
-        <h1>Bienvenido a RafMarq</h1>
-        <p>Transformamos ideas en realidad. En RafMarq, nos especializamos en crear soluciones innovadoras que impulsan el éxito de tu negocio. Con nuestra experiencia y dedicación, llevamos tus proyectos al siguiente nivel.</p>
-        <a href="#" class="btn">Descubre Más</a>
+        <h1>Problemas eléctricos y electrónicos</h1>
+        <p>Somos el  servicio técnico especializado en hogares, negocios, edificios y profesionales. Conéctate con el 
+           mejor profesional preparado para brindarte soluciones a tus problemas.</p>
+        <a href="#" class="btn Descubre">Descubre Más</a>
+      </div>
+    </section>
+
+    <section class="services">
+      <div class="container">
+        <h2>Servicios Técnicos Especializados</h2>
+        <p class="services-intro">En nuestra empresa ofrecemos soluciones integrales en el área de sistemas eléctricos y electrónicos tanto residenciales como industriales. Nuestro equipo especializado asegura la mejor calidad de servicio en una amplia gama de necesidades técnicas.</p>
+        
+        <div class="services-accordion">
+          <div class="service-item">
+            <button class="service-toggle">Soluciones Eléctricas y Electrónicas</button>
+            <div class="service-content">
+              <p>Diseñamos, instalamos y damos soporte técnico a sistemas eléctricos y electrónicos para hogares y empresas, garantizando un funcionamiento óptimo y seguro en todo momento.</p>
+            </div>
+          </div>
+          <div class="service-item">
+            <button class="service-toggle">Sistemas de Control de Acceso</button>
+            <div class="service-content">
+              <p>Proveemos e instalamos sistemas modernos de control de acceso para edificios y oficinas, contribuyendo a la seguridad y el control eficiente de espacios privados y comunitarios.</p>
+            </div>
+          </div>
+          <div class="service-item">
+            <button class="service-toggle">Mantenimiento de Bombas y Motores</button>
+            <div class="service-content">
+              <p>Ofrecemos servicios de mantenimiento y reparación para garantizar el funcionamiento continuo de bombas y motores en edificios, evitando imprevistos y prolongando su vida útil.</p>
+            </div>
+          </div>
+          <div class="service-item">
+            <button class="service-toggle">Sistemas de Iluminación</button>
+            <div class="service-content">
+              <p>Nos encargamos de la renovación e instalación de sistemas de iluminación en áreas comunes, apartamentos y oficinas dentro de edificios, asegurando ambientes bien iluminados y funcionales.</p>
+            </div>
+          </div>
+          <div class="service-item">
+            <button class="service-toggle">Sistemas Contra Incendios</button>
+            <div class="service-content">
+              <p>Realizamos labores de mantenimiento y reparaciones en sistemas contra incendios de edificios, asegurando el cumplimiento de las normativas y la seguridad de todos los ocupantes.</p>
+            </div>
+          </div>
+          <div class="service-item">
+            <button class="service-toggle">Elevadores y Escaleras Eléctricas</button>
+            <div class="service-content">
+              <p>Especialistas en la instalación, mantenimiento y reparación de ascensores y escaleras eléctricas, brindamos soluciones que garantizan la movilidad segura y eficiente dentro de los edificios.</p>
+            </div>
+          </div>
+          <div class="service-item">
+            <button class="service-toggle">Sistemas de Video Vigilancia</button>
+            <div class="service-content">
+              <p>Instalamos y realizamos mantenimiento de sistemas de videovigilancia, tanto en versiones análogas como IP Hikvision, para edificios y residencias, ofreciendo tranquilidad mediante soluciones avanzadas de seguridad.</p>
+            </div>
+          </div>
+          <div class="service-item">
+            <button class="service-toggle">Control de Identificación</button>
+            <div class="service-content">
+              <p>Implementamos sistemas de identificación personalizados para edificios y urbanizaciones, facilitando un acceso organizado y seguro para todos los usuarios.</p>
+            </div>
+          </div>
+          <div class="service-item">
+            <button class="service-toggle">Sistemas de Apertura de Puertas</button>
+            <div class="service-content">
+              <p>Nos especializamos en la instalación, mantenimiento y reparación de mecanismos de apertura de puertas, diseñados para satisfacer las necesidades de seguridad y funcionalidad en edificios.</p>
+            </div>
+          </div>
+          <div class="service-item">
+            <button class="service-toggle">Calentadores para Piscinas y Jacuzzis</button>
+            <div class="service-content">
+              <p>Prestamos servicios de reparación y mantenimiento para calentadores, optimizando su rendimiento y asegurando el confort que estos sistemas proporcionan.</p>
+            </div>
+          </div>
+        </div>
+  
       </div>
     </section>
   
-    <section class="blog">
-      <div class="container">
+    <section class="articles">
         <h2>Últimos Trabajos</h2>
-        <div class="blog-grid">
+        <ul class="article-ul">
 
-            <article class="blog-card">
-              <img src="" alt="">
-              <h3></h3>
-              <p class="date"></p>
-              <p></p>
-            </article>
+          <% data.forEach(post => { %>
+            <li>
+              <div class="card" style="width: 18rem;">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title"><span><%= post.title %></span></h5>
+                  <span class="article-list__date"><%= post.createdAt.toDateString() %></span>
+                  <p class="card-text"><%= post.body %></p>
+                  <% if (post.resolved) { %>
+                    <span class="resolved-icon">✔️</span> <!-- Ícono de resuelto -->
+                  <% } else { %>
+                    <span class="not-resolved-icon">❌</span> <!-- Ícono de no resuelto -->
+                  <% } %>
+                  <a href="/post/<%= post._id %>" class="btn btn-primary">Go somewhere</a>
+                </div>
+              </div>
+              </li>
+          <% }) %>
+          
+        </ul>
+        
+        <% if (nextPage !== null) { %>
+          <a href="/?page=<%= nextPage %>" class="pagination">&lt Seguir viendo</a>
+        <% } %>
 
-        </div>
-      </div>
     </section>
   </main>
