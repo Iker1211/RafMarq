@@ -1,12 +1,31 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
 const bcrypt = require('bcrypt');
 const Post = require('../models/Post');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
+const  { uploadFile } = require('../../app');
 
 const adminLayout = '../views/layouts/admin';
 const jwtSecret = process.env.JWT_SECRET;
+
+// Configurar multer para manejar la carga de archivos
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        const uploadPath = path.join(__dirname, '../../uploads');
+        if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath, { recursive: true });
+        }
+        cb(null, uploadPath);
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+});
+const upload = multer({ storage: storage });
 
 /**
  * 
@@ -117,7 +136,7 @@ router.get('/add-post', authMiddleware, async (req, res) => {
     try {
          const locals  = {
             title: "Add Post",
-            description: "Add Post Page"
+            description: "Add Post Page",
         }
 
         const data = await Post.find();
@@ -129,6 +148,90 @@ router.get('/add-post', authMiddleware, async (req, res) => {
         console.log(error);
     }
 });
+
+/**
+ * POST /
+ * Admin - Create New Post
+*/
+router.post('/add-post', upload.single('file'), authMiddleware, async (req, res) => {
+
+    try {
+
+        try {
+            const newPost = new Post ({
+                title: req.body.title,
+                body: req.body.body,
+                file: req.file ? req.file.filename: null
+            });
+
+            await Post.create(newPost);
+
+            // Subir archivo a Google Drive
+            if(req.file) {
+                const filePath = path.join(__dirname, '../../uploads', req.file.filename);
+                const fileData = await uploadFile(filePath, req.file.filename, req.file.mimetype);
+                console.log('File uploaded to Google Drive:', fileData);
+            }
+            
+            res.redirect('/dashboard');
+
+        } catch (error) {
+            console.log(error);
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+/**
+ * GET /
+ * Admin - Create New Post
+*/
+
+router.get('/edit-post/:id', authMiddleware, async (req, res) => {
+
+    try {
+
+        const locals  = {
+            title: "Edit Post",
+            description: "Edit Page"
+        }
+
+        const data = await Post.findOne({ _id: req.params.id });
+
+        res.render('admin/edit-post', {
+            locals,
+            data,
+            layout: adminLayout,
+        });
+        
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+/**
+ * PUT /
+ * Admin - Create New Post
+*/
+
+router.put('/edit-post/:id', authMiddleware, async (req, res) => {
+
+    try {
+        await Post.findByIdAndUpdate(req.params.id, {
+            title: req.body.title,
+            body: req.body.body,
+            updatedAt: Date.now()
+        });
+
+        res.redirect(`/edit-post/${req.params.id}`);
+        
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 
 // router.post('/admin', async (req, res) => {
 //     try {
@@ -171,6 +274,30 @@ router.post('/register', async (req, res) => {
     } catch (error) {
         console.log(error); 
     }
+});
+
+/**
+ * DELETE /
+ * Admin - Delete Post
+ */
+router.delete('/delete-post/:id', authMiddleware, async (req, res) => {
+
+    try {
+        await Post.deleteOne({ _id: req.params.id });
+        res.redirect('/dashboard');
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+/**
+ * GET /
+ * Admin - Logout
+ */
+
+router.get('/logout', (req, res) => {
+    res.clearCookie('token');
+    res.redirect('/');
 });
 
 module.exports = router;

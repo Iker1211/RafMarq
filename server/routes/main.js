@@ -40,7 +40,8 @@ router.get('', async (req, res) => {
             locals,
             data,
             current: page,
-            nextPage: hasNextPage ? nextPage : null
+            nextPage: hasNextPage ? nextPage : null,
+            currentRoute: '/'
         });
     } catch (error) {
         console.log(error);
@@ -67,7 +68,8 @@ router.get('/post/:id', async (req, res) => {
 
         res.render('post', {
             locals,
-            data
+            data,
+            currentRoute: `/post/${slug}`
         });
     } catch (error) {
         console.log(error);
@@ -76,11 +78,15 @@ router.get('/post/:id', async (req, res) => {
 
 
 router.get('/contacto', (req, res) => {    
-    res.render('contacto');
+    res.render('contacto', {
+        currentRoute: '/contacto'
+    });
 });
 
 router.get('/blog', (req, res) => {    
-    res.render('blog');
+    res.render('blog', {
+        currentRoute: '/blog'
+    });
 });
 
 module.exports = router;

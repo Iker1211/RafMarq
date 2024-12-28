@@ -1,0 +1,27 @@
+<head>
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<a href="/dashboard">&larr; Back</a>
+<div class="admin-title">
+    <h2>Add New Post</h2>
+</div>
+
+<form action="/add-post" method="POST" enctype="multipart/form-data">
+    <label for="title"><b>Title</b></label>
+    <input type="text" placeholder="Post Title" name="title">
+
+    <label for="body"><b>Content</b></label>
+    <textarea name="body" rows="10" cols="50"></textarea>
+
+    <label for="check"><b>¿El problema fue resuelto?</b></label>
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="resolved" name="resolved">
+        <label class="form-check-label" for="resolved">Sí</label>
+    </div>
+
+    <label for="file"><b>Adjuntar archivo</b></label>
+    <input type="file" name="file" id="file" class="form-control mb-3">
+
+    <input type="submit" value="Add" class="btn">
+</form>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
