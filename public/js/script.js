@@ -15,3 +15,23 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Smooth Scrolldown
+    let anchorlinks = document.querySelectorAll('a[href^="#"]');
+    
+    for (let item of anchorlinks) {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            let hashval = item.getAttribute('href');
+            let target = document.querySelector(hashval);
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            history.pushState(null, null, hashval);
+        });
+    }
+});
+
+

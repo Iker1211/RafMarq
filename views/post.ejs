@@ -1,4 +1,10 @@
 <h1 class="post-title"><%= data.title %></h1>
 <article class="article">
     <%= data.body %>
+
+    <% if (data.driveLink) { %>
+        <div class="drive-link-container">
+            <a href="<%= data.driveLink %>" target="_blank" class="btn btn-primary"><p>Ver Informe Técnico</p></a>
+        </div>
+    <% } %>
 </article>

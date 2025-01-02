@@ -1,1 +1,39 @@
 <h1 class="blog-view">Blog</h1>
+<h2 id="year">2025</h2>
+
+<section class="articles">
+    <ul class="article-ul">
+
+        <% function truncateText(text, maxLength) { %>
+            <% if (text.length > maxLength) { %>
+                <%= text.substring(0, maxLength) + '...' %>
+            <% } else { %>
+                <%= text %>
+            <% } %>
+        <% } %>
+
+      <% data.forEach(post => { %>
+        <li>
+          <div class="card" style="width: 18rem; max-height: 15rem">
+            <div class="card-body">
+              <h3 class="card-title"><span><%= post.title %></span></h3>
+              <span class="article-list__date"><i><%= post.createdAt.toDateString() %></i></span>
+              <p class="card-text"><%= truncateText(post.body, 85) %></p>
+              <% if (post.resolved) { %>
+                <span class="resolved-icon"><i class="fas fa-check-circle" style="color: green;"></i><b>El problema fue resuelto</b></span> <!-- Ícono de resuelto -->
+              <% } else { %>
+                <span class="not-resolved-icon"><i class="fas fa-times-circle" style="color: red;"></i><b>El problema no fue resuelto</b></span> <!-- Ícono de no resuelto -->
+              <% } %>
+              <a href="/post/<%= post._id %>" class="btn btn-primary">Ver trabajo</a>
+            </div>
+          </div>
+          </li>
+      <% }) %>
+      
+    </ul>
+
+    <% if (nextPage !== null) { %>
+        <a href="/blog?page=<%= nextPage %>" class="pagination">&lt Seguir viendo</a>
+      <% } %>
+    
+</section>

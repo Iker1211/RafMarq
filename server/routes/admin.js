@@ -5,32 +5,15 @@ const bcrypt = require('bcrypt');
 const Post = require('../models/Post');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
 const path = require('path');
-const  { uploadFile } = require('../../app');
-
 const adminLayout = '../views/layouts/admin';
 const jwtSecret = process.env.JWT_SECRET;
-
-// Configurar multer para manejar la carga de archivos
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        const uploadPath = path.join(__dirname, '../../uploads');
-        if (!fs.existsSync(uploadPath)) {
-            fs.mkdirSync(uploadPath, { recursive: true });
-        }
-        cb(null, uploadPath);
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname);
-    }
-});
-const upload = multer({ storage: storage });
 
 /**
  * 
  * Check Login
  */
+
 const authMiddleware = (req, res, next) => {
 const token = req.cookies.token;
 
@@ -47,7 +30,6 @@ try {
 }
 
 }
-
 
 /**
  * GET /
@@ -97,7 +79,6 @@ router.post('/admin', async (req, res) => {
 
         res.redirect('/dashboard');
 
-        res.redirect('/admin');
     } catch (error) {
         console.log(error); 
     }
@@ -115,11 +96,25 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
             description: "Admin Dashboard Page"
         }
 
-        const data = await Post.find();
+                let perPage = 9;
+                let page = req.query.page || 1;
+                
+                const data = await Post.find().sort({ createdAt: -1 }).lean() // Ordenar por fecha de creación en orden ascendente
+                .skip(perPage * page - perPage)
+                .limit(perPage)
+                .exec();
+        
+                const count = await Post.countDocuments();
+                const nextPage = parseInt(page) + 1;
+                const hasNextPage = nextPage <= Math.ceil(count /perPage);
+
         res.render('admin/dashboard', {
             locals,
+            data,
+            current: page,
             layout: adminLayout,
-            data
+            nextPage: hasNextPage ? nextPage : null,
+            currentRoute: '/dashboard/',
         });
     } catch (error) {
         console.log(error);
@@ -153,7 +148,7 @@ router.get('/add-post', authMiddleware, async (req, res) => {
  * POST /
  * Admin - Create New Post
 */
-router.post('/add-post', upload.single('file'), authMiddleware, async (req, res) => {
+router.post('/add-post', authMiddleware, async (req, res) => {
 
     try {
 
@@ -161,18 +156,14 @@ router.post('/add-post', upload.single('file'), authMiddleware, async (req, res)
             const newPost = new Post ({
                 title: req.body.title,
                 body: req.body.body,
-                file: req.file ? req.file.filename: null
+                resolved: req.body.resolved ? true : false,
+                driveLink: req.body.driveLink || null // Manejar el valor del enlace de Google Drive
             });
 
-            await Post.create(newPost);
+            console.log('Google Drive Link:', req.body.driveLink); // Log del enlace de Google Drive
 
-            // Subir archivo a Google Drive
-            if(req.file) {
-                const filePath = path.join(__dirname, '../../uploads', req.file.filename);
-                const fileData = await uploadFile(filePath, req.file.filename, req.file.mimetype);
-                console.log('File uploaded to Google Drive:', fileData);
-            }
-            
+            await newPost.save();
+
             res.redirect('/dashboard');
 
         } catch (error) {

@@ -19,6 +19,10 @@ const PostSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    driveLink: {
+        type: String,
+        default: null
+    },
     resolved: {
         type: Boolean,
         default: false

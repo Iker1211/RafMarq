@@ -1,27 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Post</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/add-post-styles.css">
 </head>
-<a href="/dashboard">&larr; Back</a>
-<div class="admin-title">
-    <h2>Add New Post</h2>
-</div>
+<body>
+    <div class="container add-post-container">
+        <a href="/dashboard" class="back-link">&larr; Back</a>
+        <div class="admin-title">
+            <h2>Add New Post</h2>
+        </div>
 
-<form action="/add-post" method="POST" enctype="multipart/form-data">
-    <label for="title"><b>Title</b></label>
-    <input type="text" placeholder="Post Title" name="title">
+        <form action="/add-post" method="POST" class="add-post-form">
+            <div class="form-group">
+                <label for="title"><b>Titulo del Trabajo</b></label>
+                <input type="text" id="title" placeholder="Post Title" name="title" required>
+            </div>
 
-    <label for="body"><b>Content</b></label>
-    <textarea name="body" rows="10" cols="50"></textarea>
+            <div class="form-group">
+                <label for="body"><b>Contenido</b></label>
+                <textarea id="body" name="body" rows="10" required></textarea>
+            </div>
 
-    <label for="check"><b>¿El problema fue resuelto?</b></label>
-    <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="resolved" name="resolved">
-        <label class="form-check-label" for="resolved">Sí</label>
+            <div class="form-group">
+                <label for="resolved"><b>¿El problema fue resuelto?</b></label>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="resolved" name="resolved">
+                    <label class="form-check-label" for="resolved">Sí</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="drive-link"><b>Enlace al Informe Técnico</b></label>
+                <input type="url" id="drive-link" placeholder="Google Drive Link" name="driveLink" required>
+            </div>
+
+            <input type="submit" value="Add Post" class="btn btn-primary">
+        </form>
     </div>
+</body>
+</html>
 
-    <label for="file"><b>Adjuntar archivo</b></label>
-    <input type="file" name="file" id="file" class="form-control mb-3">
-
-    <input type="submit" value="Add" class="btn">
-</form>
-<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

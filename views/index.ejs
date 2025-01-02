@@ -1,16 +1,19 @@
 <!-- views/partials/index.ejs -->
+ <header>
+  <script ></script>
+ </header>
 <main class="main">
     <section class="hero bg-gradient">
       <div class="container">
         <img src="/images/Logo RafMarq 0.13 (1).png" alt="RafMarq Logo" class="hero-logo" width="600" height="auto">
-        <h1>Problemas eléctricos y electrónicos</h1>
-        <p>Somos el  servicio técnico especializado en hogares, negocios, edificios y profesionales. Conéctate con el 
+        <h1>Soluciones eléctricas y electrónicas</h1>
+        <p>Somos el  mejor servicio técnico especializado en hogares, negocios, edificios y profesionales. Conéctate con el 
            mejor profesional preparado para brindarte soluciones a tus problemas.</p>
-        <a href="#" class="btn Descubre">Descubre Más</a>
+        <a href="#services" class="btn Descubre"><p>Descubre Más</p></a>
       </div>
     </section>
 
-    <section class="services">
+    <section id="services" class="services">
       <div class="container">
         <h2>Servicios Técnicos Especializados</h2>
         <p class="services-intro">En nuestra empresa ofrecemos soluciones integrales en el área de sistemas eléctricos y electrónicos tanto residenciales como industriales. Nuestro equipo especializado asegura la mejor calidad de servicio en una amplia gama de necesidades técnicas.</p>
@@ -81,24 +84,31 @@
       </div>
     </section>
   
-    <section class="articles">
+    <section id="articles" class="articles">
         <h2>Últimos Trabajos</h2>
         <ul class="article-ul">
 
+          <% function truncateText(text, maxLength) { %>
+            <% if (text.length > maxLength) { %>
+                <%= text.substring(0, maxLength) + '...' %>
+            <% } else { %>
+                <%= text %>
+            <% } %>
+        <% } %>
+
           <% data.forEach(post => { %>
             <li>
-              <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="...">
+              <div class="card" style="width: 18rem; max-height: 15rem;">
                 <div class="card-body">
-                  <h5 class="card-title"><span><%= post.title %></span></h5>
-                  <span class="article-list__date"><%= post.createdAt.toDateString() %></span>
-                  <p class="card-text"><%= post.body %></p>
+                  <h3 class="card-title"><span><%= post.title %></span></h3>
+                  <span class="article-list__date"><i><%= post.createdAt.toDateString() %></i></span>
+                  <p class="card-text"><%= truncateText(post.body, 85) %></p>
                   <% if (post.resolved) { %>
-                    <span class="resolved-icon">✔️</span> <!-- Ícono de resuelto -->
+                    <span class="resolved-icon"><i class="fas fa-check-circle" style="color: green;"></i><b>El problema fue resuelto</b></span> <!-- Ícono de resuelto -->
                   <% } else { %>
-                    <span class="not-resolved-icon">❌</span> <!-- Ícono de no resuelto -->
+                    <span class="not-resolved-icon"><i class="fas fa-times-circle" style="color: red;"></i><b> El problema no fue resuelto</b></span> <!-- Ícono de no resuelto -->
                   <% } %>
-                  <a href="/post/<%= post._id %>" class="btn btn-primary">Go somewhere</a>
+                  <a href="/post/<%= post._id %>" class="btn btn-primary"><p>Ver trabajo</p></a>
                 </div>
               </div>
               </li>
@@ -107,7 +117,7 @@
         </ul>
         
         <% if (nextPage !== null) { %>
-          <a href="/?page=<%= nextPage %>" class="pagination">&lt Seguir viendo</a>
+          <a href="/?page=<%= nextPage %>#articles" class="pagination">&lt Seguir viendo</a>
         <% } %>
 
     </section>
