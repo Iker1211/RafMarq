@@ -117,10 +117,6 @@ a:hover {
   margin-top: 16px;
 }
 
-.correo {
-  display: block;
-}
-
 .contact-info {
   display: flex;
   flex-direction: row;
@@ -566,6 +562,16 @@ section.services {
     margin-left: 0;
     margin-top: 1rem;
   }
+
+  .contact-info {
+    text-align: center;
+  }
+
+  .contact-info h3 {
+    margin-top: 1rem;
+    display: block;
+  }
+
 }
 
 @media (min-width: 861px) {
