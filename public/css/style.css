@@ -573,6 +573,9 @@ section.services {
     margin-top: 8rem;
   }
 
+  .admin-title h2 {
+    margin-top: 4rem;
+
 }
 
 @media (min-width: 861px) {
