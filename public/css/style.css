@@ -117,6 +117,10 @@ a:hover {
   margin-top: 16px;
 }
 
+.correo {
+  display: block;
+}
+
 .contact-info {
   display: flex;
   flex-direction: row;
