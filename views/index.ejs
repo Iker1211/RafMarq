@@ -104,9 +104,9 @@
                   <span class="article-list__date"><i><%= post.createdAt.toDateString() %></i></span>
                   <p class="card-text"><%= truncateText(post.body, 85) %></p>
                   <% if (post.resolved) { %>
-                    <span class="resolved-icon"><i class="fas fa-check-circle" style="color: green;"></i><b>El problema fue resuelto</b></span> <!-- Ícono de resuelto -->
+                    <span class="resolved-icon"><i class="fas fa-check-circle" style="color: green;"></i><b>Trabajo realizado</b></span> <!-- Ícono de resuelto -->
                   <% } else { %>
-                    <span class="not-resolved-icon"><i class="fas fa-times-circle" style="color: red;"></i><b> El problema no fue resuelto</b></span> <!-- Ícono de no resuelto -->
+                    <span class="not-resolved-icon"><i class="fas fa-times-circle" style="color: red;"></i><b>Trabajo no realizado</b></span> <!-- Ícono de no resuelto -->
                   <% } %>
                   <a href="/post/<%= post._id %>" class="btn btn-primary"><p>Ver trabajo</p></a>
                 </div>
