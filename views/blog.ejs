@@ -16,7 +16,7 @@
         <li>
           <div class="card" style="width: 18rem; max-height: 15rem">
             <div class="card-body">
-              <h3 class="card-title"><span><%= post.title %></span></h3>
+              <h3 class="card-title"><span><%= truncateText(post.body, 25) %></span></h3>
               <span class="article-list__date"><i><%= post.createdAt.toDateString() %></i></span>
               <p class="card-text"><%= truncateText(post.body, 85) %></p>
               <% if (post.resolved) { %>

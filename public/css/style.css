@@ -75,6 +75,25 @@ a:hover {
   color: var(--dark-orange);
 }
 
+.gallery {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  padding: 3rem 0;
+  gap: 1rem;
+}
+
+.gallery a {
+  width: 100%;
+}
+
+.gallery img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
 /* Layout */
 .container {
   width: 100%;

@@ -17,7 +17,13 @@
       <div class="container">
         <h2>Servicios Técnicos Especializados</h2>
         <p class="services-intro">En nuestra empresa ofrecemos soluciones integrales en el área de sistemas eléctricos y electrónicos tanto residenciales como industriales. Nuestro equipo especializado asegura la mejor calidad de servicio en una amplia gama de necesidades técnicas.</p>
-        
+        <div class="gallery">
+          <a href="#articles"><img src="images/Captura3.PNG" alt="Imagen 1"></a>
+          <a href="#articles"><img src="images/Captura5.PNG" alt="Imagen 2"></a>
+          <a href="#articles"><img src="images/Captura10.PNG" alt="Imagen 3"></a>
+          <a href="#articles"><img src="images/Captura11.PNG" alt="Imagen 4"></a>
+        </div>
+
         <div class="services-accordion">
           <div class="service-item">
             <button class="service-toggle">Soluciones Eléctricas y Electrónicas</button>
@@ -86,6 +92,7 @@
   
     <section id="articles" class="articles">
         <h2>Últimos Trabajos</h2>
+
         <ul class="article-ul">
 
           <% function truncateText(text, maxLength) { %>
@@ -100,7 +107,7 @@
             <li>
               <div class="card" style="width: 18rem; max-height: 15rem;">
                 <div class="card-body">
-                  <h3 class="card-title"><span><%= post.title %></span></h3>
+                  <h3 class="card-title"><span><%= truncateText(post.body, 25) %></span></h3>
                   <span class="article-list__date"><i><%= post.createdAt.toDateString() %></i></span>
                   <p class="card-text"><%= truncateText(post.body, 85) %></p>
                   <% if (post.resolved) { %>
