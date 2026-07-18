@@ -136,9 +136,16 @@
       top: 0; left: 0; right: 0;
       z-index: 100;
       padding: 1.5rem 0;
-      background: rgba(5,5,5,0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: transparent;
+    }
+    /* Soft top vignette — keeps nav text legible without a solid bar */
+    .header-vignette {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 140px;
+      z-index: 99;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.55) 35%, transparent 100%);
     }
     .header-inner {
       display: flex;
@@ -158,6 +165,48 @@
       transition: filter 0.4s var(--ease-out);
     }
 
+    /* Header trace — a thin power line descending from the logo into the hero */
+    .header-trace {
+      position: fixed;
+      top: 0;
+      left: calc(clamp(1.5rem, 5vw, 6rem) + 18px);
+      width: 1px;
+      height: 100vh;
+      z-index: 98;
+      pointer-events: none;
+      background: linear-gradient(180deg,
+        rgba(198,90,17,0) 0%,
+        rgba(198,90,17,0) 65px,
+        rgba(198,90,17,0.3) 90px,
+        rgba(232,108,26,0.5) 120px,
+        rgba(232,108,26,0.35) 160px,
+        rgba(198,90,17,0.15) 210px,
+        rgba(198,90,17,0.05) 300px,
+        transparent 380px
+      );
+      animation: headerTracePulse 5s ease-in-out infinite;
+    }
+    @keyframes headerTracePulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.85; }
+    }
+
+    /* Small node at the trace origin point */
+    .header-trace::before {
+      content: '';
+      position: absolute;
+      top: 65px; left: -2.5px;
+      width: 6px; height: 6px;
+      background: var(--orange-bright);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--orange-bright), 0 0 20px rgba(232,108,26,0.4);
+      animation: headerNodePulse 3s ease-in-out infinite;
+    }
+    @keyframes headerNodePulse {
+      0%, 100% { opacity: 0.3; transform: scale(0.7); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
     .header-nav { display: flex; gap: 2rem; list-style: none; }
     .header-nav a {
       font-family: 'Space Mono', monospace;
@@ -171,15 +220,21 @@
     }
     .header-nav a:hover { color: var(--white); }
 
-    /* ─── Hero ─── */
+    @media (max-width: 860px) {
+      .header-trace { display: none; }
+    }
+
+/* ─── Hero ─── */
     .hero {
       min-height: 100vh;
       display: flex;
       align-items: center;
-      padding: 8rem 0 6rem;
+      padding: 7rem 0 6rem;
       position: relative;
       overflow: hidden;
       isolation: isolate;
+      margin-top: -80px;
+      padding-top: calc(7rem + 80px);
     }
 
     /* Deep blueprint grid */
@@ -193,7 +248,7 @@
         linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
       background-size: 48px 48px;
       transform: perspective(800px) rotateX(1deg);
-      mask-image: radial-gradient(ellipse 90% 70% at 30% 40%, black 25%, transparent 70%);
+      mask-image: radial-gradient(ellipse 90% 80% at 30% 35%, black 20%, transparent 70%);
       -webkit-mask-image: radial-gradient(ellipse 90% 70% at 30% 40%, black 25%, transparent 70%);
     }
 
@@ -827,6 +882,8 @@
   <div class="cursor-ring" id="cursorRing"></div>
 
   <!-- Header -->
+  <div class="header-vignette"></div>
+  <div class="header-trace"></div>
   <header class="header">
     <div class="container">
       <div class="header-inner">
