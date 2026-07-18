@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RafMarq — Soluciones Eléctricas & Electrónicas</title>
+  <meta name="description" content="Servicio técnico especializado en sistemas eléctricos y electrónicos para hogares, negocios y edificios. Ingeniería de precisión.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #050505;
+      --ink-alt: #0a0a0a;
+      --ink-surface: #0d0d0d;
+      --orange: #C65A11;
+      --orange-bright: #E86C1A;
+      --orange-deep: #8B3E0B;
+      --white: #ffffff;
+      --border: rgba(255,255,255,0.07);
+      --border-active: rgba(255,255,255,0.12);
+      --text-muted: rgba(255,255,255,0.45);
+      --text-body: rgba(255,255,255,0.72);
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; background: var(--ink); }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--ink);
+      color: var(--text-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    .cursor {
+      position: fixed;
+      width: 12px; height: 12px;
+      background: var(--orange-bright);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: difference;
+      will-change: transform;
+      transition: width 0.3s var(--ease-out), height 0.3s var(--ease-out), background 0.3s var(--ease-out);
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 40px; height: 40px;
+      border: 1px solid var(--border-active);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      will-change: transform;
+      transition: width 0.3s var(--ease-out), height 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+    }
+    .cursor.magnetic { width: 20px; height: 20px; background: var(--white); }
+    .cursor-ring.magnetic { width: 60px; height: 60px; border-color: var(--orange); }
+
+    @media (max-width: 768px) {
+      .cursor, .cursor-ring { display: none; }
+      body { cursor: auto; }
+    }
+
+    .container { width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 6rem); }
+
+    .display {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.03em;
+      line-height: 0.88;
+    }
+    .display--hero { font-size: clamp(4rem, 10vw, 9rem); }
+    .display--section { font-size: clamp(2.5rem, 6vw, 5.5rem); letter-spacing: -0.02em; }
+
+    .label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--orange);
+      margin-bottom: 1.5rem;
+    }
+
+    .body-text {
+      font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+      color: var(--text-body);
+      line-height: 1.7;
+      max-width: 580px;
+    }
+
+    .reveal-line {
+      overflow: hidden;
+      display: block;
+    }
+    .reveal-line span {
+      display: block;
+      transform: translateY(105%);
+      will-change: transform;
+    }
+    .reveal-line span.visible {
+      animation: revealUp 0.9s var(--ease-smooth) forwards;
+    }
+
+    @keyframes revealUp {
+      0% { transform: translateY(105%); }
+      100% { transform: translateY(0%); }
+    }
+
+    .reveal-fade {
+      opacity: 0;
+      transform: translateY(24px);
+      will-change: transform, opacity;
+    }
+    .reveal-fade.visible {
+      animation: fadeUp 1s var(--ease-smooth) forwards;
+    }
+
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(24px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.5rem 0;
+      mix-blend-mode: difference;
+    }
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+    .header-logo img { height: 36px; width: auto; }
+    .header-logo .wordmark {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.3rem;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      display: none;
+    }
+    @media (min-width: 640px) { .header-logo .wordmark { display: block; } }
+
+    .header-nav { display: flex; gap: 2rem; list-style: none; }
+    .header-nav a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.65);
+      text-decoration: none;
+      transition: color 0.4s var(--ease-out);
+      padding: 0.5rem 0;
+    }
+    .header-nav a:hover { color: var(--white); }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 0 4rem;
+      position: relative;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: end;
+    }
+    @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+
+    .hero-left { display: flex; flex-direction: column; gap: 2rem; }
+    .hero-logo-large { width: clamp(180px, 28vw, 300px); height: auto; }
+    .hero-tagline { font-size: clamp(1rem, 1.5vw, 1.25rem); color: var(--text-muted); max-width: 420px; }
+
+    .hero-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1.5rem;
+    }
+    .hero-stat {
+      text-align: right;
+    }
+    .hero-stat .number {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      color: var(--orange);
+      font-weight: 700;
+    }
+    .hero-stat .detail {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2rem;
+      background: transparent;
+      border: 1px solid var(--border-active);
+      color: var(--white);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      cursor: none;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.4s var(--ease-out);
+      will-change: transform;
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--orange);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.5s var(--ease-smooth);
+      z-index: -1;
+    }
+    .btn:hover { border-color: var(--orange); }
+    .btn:hover::before { transform: scaleX(1); transform-origin: left; }
+    .btn-arrow { transition: transform 0.4s var(--ease-out); }
+    .btn:hover .btn-arrow { transform: translateX(4px); }
+
+    .circuit-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin: 6rem 0;
+      position: relative;
+    }
+    .circuit-divider::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      right: 0;
+      width: 8px; height: 5px;
+      background: var(--orange);
+    }
+
+    .services { padding: 4rem 0 8rem; }
+    .services-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 5rem;
+    }
+    @media (max-width: 860px) { .services-header { grid-template-columns: 1fr; } }
+    .services-header p { align-self: end; }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+    @media (max-width: 1024px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px) { .services-grid { grid-template-columns: 1fr; } }
+
+    .service-card {
+      background: var(--ink-alt);
+      padding: 2.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.5s var(--ease-out);
+      cursor: none;
+    }
+    .service-card:hover { background: var(--ink-surface); }
+    .service-card .service-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--orange);
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+    .service-card .service-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(1.2rem, 1.8vw, 1.5rem);
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+    .service-card .service-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .service-card .service-indicator {
+      position: absolute;
+      bottom: 1.5rem; right: 1.5rem;
+      width: 6px; height: 6px;
+      background: var(--orange);
+      border-radius: 50%;
+      opacity: 0;
+      transform: scale(0);
+      transition: all 0.4s var(--ease-out);
+    }
+    .service-card:hover .service-indicator { opacity: 1; transform: scale(1); }
+
+    .gallery-section { padding: 0 0 8rem; }
+    .gallery-scroll {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding: 2rem 0;
+      margin: 0 calc(-1 * clamp(1.5rem, 5vw, 6rem));
+      padding-left: clamp(1.5rem, 5vw, 6rem);
+    }
+    .gallery-scroll::-webkit-scrollbar { display: none; }
+    .gallery-item {
+      flex-shrink: 0;
+      width: clamp(280px, 36vw, 520px);
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      position: relative;
+    }
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: grayscale(30%);
+      transition: filter 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+    }
+    .gallery-item:hover img { filter: grayscale(0%); transform: scale(1.03); }
+    .gallery-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--border);
+      pointer-events: none;
+    }
+
+    .cta-section {
+      padding: 6rem 0 8rem;
+      border-top: 1px solid var(--border);
+    }
+    .cta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+    @media (max-width: 860px) { .cta-grid { grid-template-columns: 1fr; } }
+    .cta-right {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      justify-content: center;
+    }
+    .cta-contact {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 1.5rem 0;
+      border-top: 1px solid var(--border);
+    }
+    .cta-contact strong {
+      display: block;
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0;
+      text-transform: none;
+      margin-top: 0.25rem;
+      font-weight: 400;
+    }
+
+    .footer {
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-credit {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+    .footer-whatsapp {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--orange);
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transition: color 0.3s var(--ease-out);
+    }
+    .footer-whatsapp:hover { color: var(--white); }
+
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9990;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="noise-overlay"></div>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <header class="header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="#" class="header-logo">
+          <img src="/images/Logo%20RafMarq%200.15.png" alt="RafMarq">
+          <span class="wordmark">RafMarq</span>
+        </a>
+        <nav>
+          <ul class="header-nav">
+            <li><a href="#services">Servicios</a></li>
+            <li><a href="#trabajos">Trabajos</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-left">
+          <div class="reveal-line"><span class="label">Ingeniería de precisión</span></div>
+          <h1 class="display display--hero">
+            <span class="reveal-line"><span>Soluciones</span></span>
+            <span class="reveal-line"><span>Eléctricas</span></span>
+            <span class="reveal-line"><span style="color:var(--orange)">& Electrónicas</span></span>
+          </h1>
+          <p class="hero-tagline reveal-fade">
+            Servicio técnico especializado para hogares, negocios, edificios y profesionales. Cada sistema que tocamos queda funcionando como debe.
+          </p>
+          <div class="reveal-fade">
+            <a href="#services" class="btn magnetic-target">
+              <span>Explorar servicios</span>
+              <span class="btn-arrow">&#8595;</span>
+            </a>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="hero-stat reveal-fade">
+            <div class="number">10+</div>
+            <div class="detail">Especialidades técnicas</div>
+          </div>
+          <div class="hero-stat reveal-fade">
+            <div class="number">24/7</div>
+            <div class="detail">Respuesta de emergencia</div>
+          </div>
+          <div class="hero-stat reveal-fade">
+            <div class="number">99%</div>
+            <div class="detail">Tasa de resolución</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="circuit-divider"></div>
+
+  <section class="services" id="services">
+    <div class="container">
+      <div class="services-header">
+        <div>
+          <span class="label reveal-fade">Qué hacemos</span>
+          <h2 class="display display--section">
+            <span class="reveal-line"><span>Servicios</span></span>
+            <span class="reveal-line"><span>Técnicos</span></span>
+          </h2>
+        </div>
+        <p class="body-text reveal-fade">
+          Desde el mantenimiento de un interruptor hasta la instalación completa de un sistema contra incendios en un edificio de 20 pisos. La escala cambia, la precisión no.
+        </p>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card magnetic-target"><span class="service-num">01</span><h3 class="service-title">Soluciones Eléctricas y Electrónicas</h3><p class="service-desc">Diseño, instalación y soporte técnico de sistemas eléctricos y electrónicos para hogares y empresas.</p><span class="service-indicator"></span></div>
+        <div class="service-card magnetic-target"><span class="service-num">02</span><h3 class="service-title">Sistemas de Control de Acceso</h3><p class="service-desc">Sistemas modernos de control de acceso para edificios y oficinas, gestión segura de espacios privados y comunitarios.</p><span class="service-indicator"></span></div>
+        <div class="service-card magnetic-target"><span class="service-num">03</span><h3 class="service-title">Mantenimiento de Bombas y Motores</h3><p class="service-desc">Mantenimiento y reparación para asegurar el funcionamiento continuo de bombas y motores, prolongando su vida útil.</p><span class="service-indicator"></span></div>
+        <div class="service-card magnetic-target"><span class="service-num">04</span><h3 class="service-title">Sistemas de Iluminación</h3><p class="service-desc">Renovación e instalación de iluminación en áreas comunes, apartamentos y oficinas. Ambientes bien iluminados y funcionales.</p><span class="service-indicator"></span></div>
+        <div class="service-card magnetic-target"><span class="service-num">05</span><h3 class="service-title">Sistemas Contra Incendios</h3><p class="service-desc">Mantenimiento y reparaciones en sistemas contra incendios de edificios, asegurando el cumplimiento de normativas.</p><span class="service-indicator"></span></div>
+        <div class="service-card magnetic-target"><span class="service-num">06</span><h3 class="service-title">Elevadores y Escaleras Eléctricas</h3><p class="service-desc">Instalación, mantenimiento y reparación de ascensores y escaleras eléctricas para movilidad segura y eficiente.</p><span class="service-indicator"></span></div>
+        <div class="service-card magnetic-target"><span class="service-num">07</span><h3 class="service-title">Sistemas de Video Vigilancia</h3><p class="service-desc">Instalación y mantenimiento de CCTV análogo e IP Hikvision para edificios y residencias. Seguridad avanzada.</p><span class="service-indicator"></span></div>
+        <div class="service-card magnetic-target"><span class="service-num">08</span><h3 class="service-title">Control de Identificación</h3><p class="service-desc">Sistemas de identificación personalizados para edificios y urbanizaciones. Acceso organizado y seguro.</p><span class="service-indicator"></span></div>
+        <div class="service-card magnetic-target"><span class="service-num">09</span><h3 class="service-title">Sistemas de Apertura de Puertas</h3><p class="service-desc">Instalación, mantenimiento y reparación de mecanismos de apertura de puertas para seguridad y funcionalidad.</p><span class="service-indicator"></span></div>
+        <div class="service-card magnetic-target"><span class="service-num">10</span><h3 class="service-title">Calentadores para Piscinas y Jacuzzis</h3><p class="service-desc">Reparación y mantenimiento de calentadores, optimizando su rendimiento y asegurando el confort.</p><span class="service-indicator"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery-section" id="trabajos">
+    <div class="container">
+      <span class="label reveal-fade">Trabajos recientes</span>
+      <h2 class="display display--section reveal-line"><span>En terreno</span></h2>
+    </div>
+    <div class="gallery-scroll">
+      <div class="gallery-item"><img src="/images/Captura3.PNG" alt="Trabajo RafMarq 1" loading="lazy"></div>
+      <div class="gallery-item"><img src="/images/Captura5.PNG" alt="Trabajo RafMarq 2" loading="lazy"></div>
+      <div class="gallery-item"><img src="/images/Captura10.PNG" alt="Trabajo RafMarq 3" loading="lazy"></div>
+      <div class="gallery-item"><img src="/images/Captura11.PNG" alt="Trabajo RafMarq 4" loading="lazy"></div>
+    </div>
+  </section>
+
+  <section class="cta-section" id="contacto">
+    <div class="container">
+      <div class="cta-grid">
+        <div>
+          <span class="label reveal-fade">Contacto directo</span>
+          <h2 class="display display--section reveal-line"><span>Hablemos de</span></h2>
+          <h2 class="display display--section reveal-line"><span style="color:var(--orange)">tu proyecto</span></h2>
+          <p class="body-text reveal-fade" style="margin-top:1rem;">
+            Cuéntanos qué necesitas y te damos una solución a la medida. Respuesta rápida, trabajo de calidad.
+          </p>
+        </div>
+        <div class="cta-right">
+          <div class="cta-contact reveal-fade">Responsable técnico<strong>Yandri Márquez</strong></div>
+          <div class="cta-contact reveal-fade">Correo electrónico<strong>yandrymarquezloorcuenca@hotmail.com</strong></div>
+          <div class="cta-contact reveal-fade">Teléfono / WhatsApp<strong>+593 96 066 2445</strong></div>
+          <div class="reveal-fade" style="margin-top:1rem;">
+            <a href="https://wa.me/593960662445/?text=Necesito%20ayuda%20con%20un%20problema!" class="btn magnetic-target" target="_blank" rel="noopener noreferrer">
+              <span>Escribir por WhatsApp</span>
+              <span class="btn-arrow">&#8599;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer container">
+    <span class="footer-credit">&copy; 2026 RafMarq — Todos los derechos reservados</span>
+    <a href="https://wa.me/593960662445/?text=Necesito%20ayuda%20con%20un%20problema!" class="footer-whatsapp" target="_blank" rel="noopener noreferrer">WhatsApp &#8599;</a>
+  </footer>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    const cursorRing = document.getElementById('cursorRing');
+    let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0, ringX = 0, ringY = 0;
+    document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.12;
+      cursorY += (mouseY - cursorY) * 0.12;
+      ringX += (mouseX - ringX) * 0.08;
+      ringY += (mouseY - ringY) * 0.08;
+      cursor.style.transform = `translate3d(${cursorX - 6}px, ${cursorY - 6}px, 0)`;
+      cursorRing.style.transform = `translate3d(${ringX - 20}px, ${ringY - 20}px, 0)`;
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+    document.querySelectorAll('.magnetic-target').forEach(el => {
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        el.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+        cursor.classList.add('magnetic');
+        cursorRing.classList.add('magnetic');
+      });
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = 'translate(0, 0)';
+        cursor.classList.remove('magnetic');
+        cursorRing.classList.remove('magnetic');
+      });
+    });
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const delay = entry.target.dataset.delay || 0;
+          setTimeout(() => entry.target.classList.add('visible'), delay);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal-line span').forEach((el, i) => { el.dataset.delay = i * 100; observer.observe(el); });
+    document.querySelectorAll('.reveal-fade').forEach((el, i) => { el.dataset.delay = i * 80; observer.observe(el); });
+  </script>
+</body>
+</html>
