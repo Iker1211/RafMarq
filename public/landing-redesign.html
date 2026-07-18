@@ -175,47 +175,186 @@
     .hero {
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 8rem 0 4rem;
+      align-items: center;
+      padding: 10rem 0 6rem;
       position: relative;
+      overflow: hidden;
     }
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: end;
+
+    /* Circuit grid background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 60% at 35% 45%, black 30%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 35% 45%, black 30%, transparent 70%);
+      pointer-events: none;
     }
-    @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
 
-    .hero-left { display: flex; flex-direction: column; gap: 2rem; }
-    .hero-logo-large { width: clamp(180px, 28vw, 300px); height: auto; }
-    .hero-tagline { font-size: clamp(1rem, 1.5vw, 1.25rem); color: var(--text-muted); max-width: 420px; }
+    /* Circuit trace lines */
+    .hero-trace {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0.12;
+    }
+    .hero-trace--h {
+      top: 28%; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--orange) 15%, var(--orange) 22%, transparent 45%, var(--orange) 72%, var(--orange) 78%, transparent 100%);
+      animation: tracePulse 4s ease-in-out infinite;
+    }
+    .hero-trace--v {
+      top: 0; bottom: 20%;
+      left: 38%;
+      width: 1px;
+      background: linear-gradient(180deg, transparent 0%, rgba(198,90,17,0.4) 30%, rgba(198,90,17,0.6) 55%, transparent 80%);
+      animation: tracePulse 5s ease-in-out 1s infinite;
+    }
+    @keyframes tracePulse {
+      0%, 100% { opacity: 0.06; }
+      50% { opacity: 0.16; }
+    }
 
-    .hero-right {
+    /* Floating node dots */
+    .hero-node {
+      position: absolute;
+      width: 4px; height: 4px;
+      background: var(--orange);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero-node--1 { top: 27.5%; left: 15%; animation: nodeBlink 3.5s ease-in-out infinite; }
+    .hero-node--2 { top: 27.5%; left: 22%; animation: nodeBlink 3.5s ease-in-out 0.7s infinite; }
+    .hero-node--3 { top: 27.5%; left: 72%; animation: nodeBlink 3.5s ease-in-out 1.4s infinite; }
+    .hero-node--4 { top: 27.5%; left: 78%; animation: nodeBlink 3.5s ease-in-out 2.1s infinite; }
+    .hero-node--5 { top: 55%; left: 38.2%; animation: nodeBlink 4s ease-in-out 0.5s infinite; }
+    .hero-node--6 { top: 30%; left: 38.2%; animation: nodeBlink 4s ease-in-out 2s infinite; }
+    @keyframes nodeBlink {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.8); box-shadow: 0 0 8px var(--orange); }
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
       display: flex;
       flex-direction: column;
+      gap: clamp(2rem, 5vh, 4rem);
+      width: 100%;
+    }
+
+    /* Logo row */
+    .hero-brand {
+      display: flex;
       align-items: flex-end;
-      gap: 1.5rem;
+      justify-content: space-between;
+    }
+    .hero-brand img {
+      width: clamp(140px, 18vw, 220px);
+      height: auto;
+      filter: brightness(1.8);
+    }
+    .hero-brand .hero-est {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      padding-bottom: 0.3rem;
+    }
+
+    /* Headline cascade */
+    .hero-headline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .hero-word {
+      display: block;
+      overflow: hidden;
+      line-height: 0.82;
+    }
+    .hero-word span {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      color: var(--white);
+      transform: translateY(105%);
+      will-change: transform;
+    }
+    .hero-word span.visible {
+      animation: heroReveal 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .hero-word--xl span {
+      font-size: clamp(4.5rem, 12vw, 11rem);
+      letter-spacing: -0.04em;
+    }
+    .hero-word--lg span {
+      font-size: clamp(4rem, 10.5vw, 9.5rem);
+      letter-spacing: -0.035em;
+    }
+    .hero-word--accent span {
+      font-size: clamp(4.5rem, 12vw, 11rem);
+      letter-spacing: -0.04em;
+      color: var(--orange);
+    }
+
+    @keyframes heroReveal {
+      0% { transform: translateY(105%); }
+      100% { transform: translateY(0%); }
+    }
+
+    /* Info bar below headline */
+    .hero-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: clamp(1.5rem, 3vh, 3rem);
+      border-top: 1px solid var(--border);
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
     }
     .hero-stat {
-      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
     }
     .hero-stat .number {
       font-family: 'Space Mono', monospace;
-      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      font-size: 0.9rem;
       color: var(--orange);
       font-weight: 700;
+      letter-spacing: 0.05em;
     }
     .hero-stat .detail {
-      font-size: 0.7rem;
+      font-size: 0.6rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--text-muted);
-      margin-top: 0.25rem;
+    }
+    .hero-desc {
+      max-width: 380px;
+      text-align: right;
+      font-size: 0.85rem;
+      color: var(--text-body);
+      line-height: 1.65;
     }
 
-    /* ─── Button ─── */
+    @media (max-width: 860px) {
+      .hero { padding: 7rem 0 4rem; }
+      .hero-info { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+      .hero-stats { gap: 2rem; }
+      .hero-desc { text-align: left; max-width: 100%; }
+      .hero-node, .hero-trace--v { display: none; }
+    }/* ─── Button ─── */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -475,47 +614,53 @@
 
   <!-- Hero -->
   <section class="hero">
+    <div class="hero-trace hero-trace--h"></div>
+    <div class="hero-trace hero-trace--v"></div>
+    <div class="hero-node hero-node--1"></div>
+    <div class="hero-node hero-node--2"></div>
+    <div class="hero-node hero-node--3"></div>
+    <div class="hero-node hero-node--4"></div>
+    <div class="hero-node hero-node--5"></div>
+    <div class="hero-node hero-node--6"></div>
+
     <div class="container">
-      <div class="hero-grid">
-        <div class="hero-left">
-          <div class="reveal-fade" style="margin-bottom:1.5rem;">
-            <img src="https://raw.githubusercontent.com/Iker1211/RafMarq/main/public/images/Logo%20RafMarq%200.13%20(1).png" alt="RafMarq Logo" class="hero-logo-large" style="filter:brightness(1.8);">
+      <div class="hero-inner">
+
+        <div class="hero-brand reveal-fade">
+          <img src="https://raw.githubusercontent.com/Iker1211/RafMarq/main/public/images/Logo%20RafMarq%200.13%20(1).png" alt="RafMarq">
+          <span class="hero-est">Servicio técnico especializado</span>
+        </div>
+
+        <div class="hero-headline">
+          <div class="hero-word hero-word--xl"><span>Soluciones</span></div>
+          <div class="hero-word hero-word--lg"><span>Eléctricas</span></div>
+          <div class="hero-word hero-word--accent"><span>& Electrónicas</span></div>
+        </div>
+
+        <div class="hero-info">
+          <div class="hero-stats">
+            <div class="hero-stat reveal-fade">
+              <span class="number">10+</span>
+              <span class="detail">Especialidades</span>
+            </div>
+            <div class="hero-stat reveal-fade">
+              <span class="number">24/7</span>
+              <span class="detail">Emergencias</span>
+            </div>
+            <div class="hero-stat reveal-fade">
+              <span class="number">99%</span>
+              <span class="detail">Resolución</span>
+            </div>
           </div>
-          <div class="reveal-line"><span class="label">Ingeniería de precisión</span></div>
-          <h1 class="display display--hero">
-            <span class="reveal-line"><span>Soluciones</span></span>
-            <span class="reveal-line"><span>Eléctricas</span></span>
-            <span class="reveal-line"><span style="color:var(--orange)">& Electrónicas</span></span>
-          </h1>
-          <p class="hero-tagline reveal-fade">
-            Servicio técnico especializado para hogares, negocios, edificios y profesionales. Cada sistema que tocamos queda funcionando como debe.
+          <p class="hero-desc reveal-fade">
+            Diseñamos, instalamos y damos soporte a sistemas eléctricos y electrónicos para hogares y empresas. Cada sistema que tocamos queda funcionando como debe.
           </p>
-          <div class="reveal-fade">
-            <a href="#services" class="btn magnetic-target">
-              <span>Explorar servicios</span>
-              <span class="btn-arrow">&#8595;</span>
-            </a>
-          </div>
         </div>
-        <div class="hero-right">
-          <div class="hero-stat reveal-fade">
-            <div class="number">10+</div>
-            <div class="detail">Especialidades técnicas</div>
-          </div>
-          <div class="hero-stat reveal-fade">
-            <div class="number">24/7</div>
-            <div class="detail">Respuesta de emergencia</div>
-          </div>
-          <div class="hero-stat reveal-fade">
-            <div class="number">99%</div>
-            <div class="detail">Tasa de resolución</div>
-          </div>
-        </div>
+
       </div>
     </div>
   </section>
-
-  <!-- Circuit Divider -->
+<!-- Circuit Divider -->
   <div class="circuit-divider"></div>
 
   <!-- Services -->
