@@ -37,6 +37,7 @@
       cursor: none;
     }
 
+    /* ─── Custom Cursor ─── */
     .cursor {
       position: fixed;
       width: 12px; height: 12px;
@@ -66,8 +67,10 @@
       body { cursor: auto; }
     }
 
+    /* ─── Layout ─── */
     .container { width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 6rem); }
 
+    /* ─── Typography ─── */
     .display {
       font-family: 'Playfair Display', serif;
       font-weight: 900;
@@ -94,6 +97,7 @@
       max-width: 580px;
     }
 
+    /* ─── Reveal Animation ─── */
     .reveal-line {
       overflow: hidden;
       display: block;
@@ -126,12 +130,15 @@
       100% { opacity: 1; transform: translateY(0); }
     }
 
+    /* ─── Header ─── */
     .header {
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 100;
       padding: 1.5rem 0;
-      mix-blend-mode: difference;
+      background: rgba(5,5,5,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
     .header-inner {
       display: flex;
@@ -144,16 +151,12 @@
       gap: 0.75rem;
       text-decoration: none;
     }
-    .header-logo img { height: 36px; width: auto; }
-    .header-logo .wordmark {
-      font-family: 'Playfair Display', serif;
-      font-weight: 900;
-      font-size: 1.3rem;
-      color: var(--white);
-      letter-spacing: -0.02em;
-      display: none;
+    .header-logo img {
+      height: 36px;
+      width: auto;
+      filter: brightness(1.8);
+      transition: filter 0.4s var(--ease-out);
     }
-    @media (min-width: 640px) { .header-logo .wordmark { display: block; } }
 
     .header-nav { display: flex; gap: 2rem; list-style: none; }
     .header-nav a {
@@ -168,6 +171,7 @@
     }
     .header-nav a:hover { color: var(--white); }
 
+    /* ─── Hero ─── */
     .hero {
       min-height: 100vh;
       display: flex;
@@ -211,6 +215,7 @@
       margin-top: 0.25rem;
     }
 
+    /* ─── Button ─── */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -245,6 +250,7 @@
     .btn-arrow { transition: transform 0.4s var(--ease-out); }
     .btn:hover .btn-arrow { transform: translateX(4px); }
 
+    /* ─── Circuit Divider ─── */
     .circuit-divider {
       width: 100%;
       height: 1px;
@@ -261,6 +267,7 @@
       background: var(--orange);
     }
 
+    /* ─── Services Section ─── */
     .services { padding: 4rem 0 8rem; }
     .services-header {
       display: grid;
@@ -323,6 +330,7 @@
     }
     .service-card:hover .service-indicator { opacity: 1; transform: scale(1); }
 
+    /* ─── Gallery ─── */
     .gallery-section { padding: 0 0 8rem; }
     .gallery-scroll {
       display: flex;
@@ -341,6 +349,7 @@
       aspect-ratio: 4 / 3;
       overflow: hidden;
       position: relative;
+      background: var(--ink-alt);
     }
     .gallery-item img {
       width: 100%; height: 100%;
@@ -357,6 +366,7 @@
       pointer-events: none;
     }
 
+    /* ─── CTA Section ─── */
     .cta-section {
       padding: 6rem 0 8rem;
       border-top: 1px solid var(--border);
@@ -393,6 +403,7 @@
       font-weight: 400;
     }
 
+    /* ─── Footer ─── */
     .footer {
       padding: 2rem 0;
       border-top: 1px solid var(--border);
@@ -423,6 +434,7 @@
     }
     .footer-whatsapp:hover { color: var(--white); }
 
+    /* ─── Noise Texture ─── */
     .noise-overlay {
       position: fixed;
       inset: 0;
@@ -436,16 +448,19 @@
 </head>
 <body>
 
+  <!-- Noise Texture -->
   <div class="noise-overlay"></div>
+
+  <!-- Custom Cursor -->
   <div class="cursor" id="cursor"></div>
   <div class="cursor-ring" id="cursorRing"></div>
 
+  <!-- Header -->
   <header class="header">
     <div class="container">
       <div class="header-inner">
         <a href="#" class="header-logo">
-          <img src="/images/Logo%20RafMarq%200.15.png" alt="RafMarq">
-          <span class="wordmark">RafMarq</span>
+          <img src="https://raw.githubusercontent.com/Iker1211/RafMarq/main/public/images/Logo%20RafMarq%200.15.png" alt="RafMarq">
         </a>
         <nav>
           <ul class="header-nav">
@@ -458,6 +473,7 @@
     </div>
   </header>
 
+  <!-- Hero -->
   <section class="hero">
     <div class="container">
       <div class="hero-grid">
@@ -496,8 +512,10 @@
     </div>
   </section>
 
+  <!-- Circuit Divider -->
   <div class="circuit-divider"></div>
 
+  <!-- Services -->
   <section class="services" id="services">
     <div class="container">
       <div class="services-header">
@@ -514,33 +532,93 @@
       </div>
 
       <div class="services-grid">
-        <div class="service-card magnetic-target"><span class="service-num">01</span><h3 class="service-title">Soluciones Eléctricas y Electrónicas</h3><p class="service-desc">Diseño, instalación y soporte técnico de sistemas eléctricos y electrónicos para hogares y empresas.</p><span class="service-indicator"></span></div>
-        <div class="service-card magnetic-target"><span class="service-num">02</span><h3 class="service-title">Sistemas de Control de Acceso</h3><p class="service-desc">Sistemas modernos de control de acceso para edificios y oficinas, gestión segura de espacios privados y comunitarios.</p><span class="service-indicator"></span></div>
-        <div class="service-card magnetic-target"><span class="service-num">03</span><h3 class="service-title">Mantenimiento de Bombas y Motores</h3><p class="service-desc">Mantenimiento y reparación para asegurar el funcionamiento continuo de bombas y motores, prolongando su vida útil.</p><span class="service-indicator"></span></div>
-        <div class="service-card magnetic-target"><span class="service-num">04</span><h3 class="service-title">Sistemas de Iluminación</h3><p class="service-desc">Renovación e instalación de iluminación en áreas comunes, apartamentos y oficinas. Ambientes bien iluminados y funcionales.</p><span class="service-indicator"></span></div>
-        <div class="service-card magnetic-target"><span class="service-num">05</span><h3 class="service-title">Sistemas Contra Incendios</h3><p class="service-desc">Mantenimiento y reparaciones en sistemas contra incendios de edificios, asegurando el cumplimiento de normativas.</p><span class="service-indicator"></span></div>
-        <div class="service-card magnetic-target"><span class="service-num">06</span><h3 class="service-title">Elevadores y Escaleras Eléctricas</h3><p class="service-desc">Instalación, mantenimiento y reparación de ascensores y escaleras eléctricas para movilidad segura y eficiente.</p><span class="service-indicator"></span></div>
-        <div class="service-card magnetic-target"><span class="service-num">07</span><h3 class="service-title">Sistemas de Video Vigilancia</h3><p class="service-desc">Instalación y mantenimiento de CCTV análogo e IP Hikvision para edificios y residencias. Seguridad avanzada.</p><span class="service-indicator"></span></div>
-        <div class="service-card magnetic-target"><span class="service-num">08</span><h3 class="service-title">Control de Identificación</h3><p class="service-desc">Sistemas de identificación personalizados para edificios y urbanizaciones. Acceso organizado y seguro.</p><span class="service-indicator"></span></div>
-        <div class="service-card magnetic-target"><span class="service-num">09</span><h3 class="service-title">Sistemas de Apertura de Puertas</h3><p class="service-desc">Instalación, mantenimiento y reparación de mecanismos de apertura de puertas para seguridad y funcionalidad.</p><span class="service-indicator"></span></div>
-        <div class="service-card magnetic-target"><span class="service-num">10</span><h3 class="service-title">Calentadores para Piscinas y Jacuzzis</h3><p class="service-desc">Reparación y mantenimiento de calentadores, optimizando su rendimiento y asegurando el confort.</p><span class="service-indicator"></span></div>
+        <div class="service-card magnetic-target">
+          <span class="service-num">01</span>
+          <h3 class="service-title">Soluciones Eléctricas y Electrónicas</h3>
+          <p class="service-desc">Diseño, instalación y soporte técnico de sistemas eléctricos y electrónicos para hogares y empresas.</p>
+          <span class="service-indicator"></span>
+        </div>
+        <div class="service-card magnetic-target">
+          <span class="service-num">02</span>
+          <h3 class="service-title">Sistemas de Control de Acceso</h3>
+          <p class="service-desc">Sistemas modernos de control de acceso para edificios y oficinas, gestión segura de espacios privados y comunitarios.</p>
+          <span class="service-indicator"></span>
+        </div>
+        <div class="service-card magnetic-target">
+          <span class="service-num">03</span>
+          <h3 class="service-title">Mantenimiento de Bombas y Motores</h3>
+          <p class="service-desc">Mantenimiento y reparación para asegurar el funcionamiento continuo de bombas y motores, prolongando su vida útil.</p>
+          <span class="service-indicator"></span>
+        </div>
+        <div class="service-card magnetic-target">
+          <span class="service-num">04</span>
+          <h3 class="service-title">Sistemas de Iluminación</h3>
+          <p class="service-desc">Renovación e instalación de iluminación en áreas comunes, apartamentos y oficinas. Ambientes bien iluminados y funcionales.</p>
+          <span class="service-indicator"></span>
+        </div>
+        <div class="service-card magnetic-target">
+          <span class="service-num">05</span>
+          <h3 class="service-title">Sistemas Contra Incendios</h3>
+          <p class="service-desc">Mantenimiento y reparaciones en sistemas contra incendios de edificios, asegurando el cumplimiento de normativas.</p>
+          <span class="service-indicator"></span>
+        </div>
+        <div class="service-card magnetic-target">
+          <span class="service-num">06</span>
+          <h3 class="service-title">Elevadores y Escaleras Eléctricas</h3>
+          <p class="service-desc">Instalación, mantenimiento y reparación de ascensores y escaleras eléctricas para movilidad segura y eficiente.</p>
+          <span class="service-indicator"></span>
+        </div>
+        <div class="service-card magnetic-target">
+          <span class="service-num">07</span>
+          <h3 class="service-title">Sistemas de Video Vigilancia</h3>
+          <p class="service-desc">Instalación y mantenimiento de CCTV análogo e IP Hikvision para edificios y residencias. Seguridad avanzada.</p>
+          <span class="service-indicator"></span>
+        </div>
+        <div class="service-card magnetic-target">
+          <span class="service-num">08</span>
+          <h3 class="service-title">Control de Identificación</h3>
+          <p class="service-desc">Sistemas de identificación personalizados para edificios y urbanizaciones. Acceso organizado y seguro.</p>
+          <span class="service-indicator"></span>
+        </div>
+        <div class="service-card magnetic-target">
+          <span class="service-num">09</span>
+          <h3 class="service-title">Sistemas de Apertura de Puertas</h3>
+          <p class="service-desc">Instalación, mantenimiento y reparación de mecanismos de apertura de puertas para seguridad y funcionalidad.</p>
+          <span class="service-indicator"></span>
+        </div>
+        <div class="service-card magnetic-target">
+          <span class="service-num">10</span>
+          <h3 class="service-title">Calentadores para Piscinas y Jacuzzis</h3>
+          <p class="service-desc">Reparación y mantenimiento de calentadores, optimizando su rendimiento y asegurando el confort.</p>
+          <span class="service-indicator"></span>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- Gallery -->
   <section class="gallery-section" id="trabajos">
     <div class="container">
       <span class="label reveal-fade">Trabajos recientes</span>
       <h2 class="display display--section reveal-line"><span>En terreno</span></h2>
     </div>
     <div class="gallery-scroll">
-      <div class="gallery-item"><img src="/images/Captura3.PNG" alt="Trabajo RafMarq 1" loading="lazy"></div>
-      <div class="gallery-item"><img src="/images/Captura5.PNG" alt="Trabajo RafMarq 2" loading="lazy"></div>
-      <div class="gallery-item"><img src="/images/Captura10.PNG" alt="Trabajo RafMarq 3" loading="lazy"></div>
-      <div class="gallery-item"><img src="/images/Captura11.PNG" alt="Trabajo RafMarq 4" loading="lazy"></div>
+      <div class="gallery-item">
+        <img src="https://images.stockcake.com/public/6/a/e/6aea65d2-66be-4db2-8ef6-f4e6537a4b3b/electrical-panel-maintenance-stockcake.jpg" alt="Mantenimiento de panel eléctrico industrial" loading="lazy">
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.stockcake.com/public/7/d/1/7d123ca2-453e-435b-ac91-9747a927e3c6_medium/professional-electrical-work-stockcake.jpg" alt="Trabajo eléctrico profesional" loading="lazy">
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.pexels.com/photos/6477212/pexels-photo-6477212.jpeg" alt="Placa de circuito electrónico" loading="lazy">
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.stockcake.com/public/5/1/1/511fe0fa-0739-4ddc-916d-b46802f9ec51_large/circuit-board-patterns-stockcake.jpg" alt="Patrones de circuito electrónico" loading="lazy">
+      </div>
     </div>
   </section>
 
+  <!-- CTA / Contact -->
   <section class="cta-section" id="contacto">
     <div class="container">
       <div class="cta-grid">
@@ -553,11 +631,20 @@
           </p>
         </div>
         <div class="cta-right">
-          <div class="cta-contact reveal-fade">Responsable técnico<strong>Yandri Márquez</strong></div>
-          <div class="cta-contact reveal-fade">Correo electrónico<strong>yandrymarquezloorcuenca@hotmail.com</strong></div>
-          <div class="cta-contact reveal-fade">Teléfono / WhatsApp<strong>+593 96 066 2445</strong></div>
+          <div class="cta-contact reveal-fade">
+            Responsable técnico
+            <strong>Yandri Márquez</strong>
+          </div>
+          <div class="cta-contact reveal-fade">
+            Correo electrónico
+            <strong>yandrymarquezloorcuenca@hotmail.com</strong>
+          </div>
+          <div class="cta-contact reveal-fade">
+            Teléfono / WhatsApp
+            <strong>+593 96 066 2445</strong>
+          </div>
           <div class="reveal-fade" style="margin-top:1rem;">
-            <a href="https://wa.me/593960662445/?text=Necesito%20ayuda%20con%20un%20problema!" class="btn magnetic-target" target="_blank" rel="noopener noreferrer">
+            <a href="https://wa.me/593960662445/?text=Necesito%20ayuda%20con%20un%20problema!" class="btn magnetic-target" target="_blank">
               <span>Escribir por WhatsApp</span>
               <span class="btn-arrow">&#8599;</span>
             </a>
@@ -567,26 +654,44 @@
     </div>
   </section>
 
+  <!-- Footer -->
   <footer class="footer container">
     <span class="footer-credit">&copy; 2026 RafMarq — Todos los derechos reservados</span>
-    <a href="https://wa.me/593960662445/?text=Necesito%20ayuda%20con%20un%20problema!" class="footer-whatsapp" target="_blank" rel="noopener noreferrer">WhatsApp &#8599;</a>
+    <a href="https://wa.me/593960662445/?text=Necesito%20ayuda%20con%20un%20problema!" class="footer-whatsapp" target="_blank" rel="noopener noreferrer">
+      WhatsApp &#8599;
+    </a>
   </footer>
 
   <script>
+    /* ─── Custom Cursor with LERP ─── */
     const cursor = document.getElementById('cursor');
     const cursorRing = document.getElementById('cursorRing');
-    let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0, ringX = 0, ringY = 0;
-    document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+    let ringX = 0, ringY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
     function animateCursor() {
-      cursorX += (mouseX - cursorX) * 0.12;
-      cursorY += (mouseY - cursorY) * 0.12;
-      ringX += (mouseX - ringX) * 0.08;
-      ringY += (mouseY - ringY) * 0.08;
+      const lerpFactor = 0.12;
+      const ringLerp = 0.08;
+
+      cursorX += (mouseX - cursorX) * lerpFactor;
+      cursorY += (mouseY - cursorY) * lerpFactor;
+      ringX += (mouseX - ringX) * ringLerp;
+      ringY += (mouseY - ringY) * ringLerp;
+
       cursor.style.transform = `translate3d(${cursorX - 6}px, ${cursorY - 6}px, 0)`;
       cursorRing.style.transform = `translate3d(${ringX - 20}px, ${ringY - 20}px, 0)`;
+
       requestAnimationFrame(animateCursor);
     }
     animateCursor();
+
+    /* ─── Magnetic Buttons ─── */
     document.querySelectorAll('.magnetic-target').forEach(el => {
       el.addEventListener('mousemove', (e) => {
         const rect = el.getBoundingClientRect();
@@ -602,16 +707,31 @@
         cursorRing.classList.remove('magnetic');
       });
     });
+
+    /* ─── Scroll Reveal ─── */
+    const revealLines = document.querySelectorAll('.reveal-line span');
+    const revealFades = document.querySelectorAll('.reveal-fade');
+
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
+      entries.forEach((entry, i) => {
         if (entry.isIntersecting) {
           const delay = entry.target.dataset.delay || 0;
-          setTimeout(() => entry.target.classList.add('visible'), delay);
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, delay);
         }
       });
     }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.reveal-line span').forEach((el, i) => { el.dataset.delay = i * 100; observer.observe(el); });
-    document.querySelectorAll('.reveal-fade').forEach((el, i) => { el.dataset.delay = i * 80; observer.observe(el); });
+
+    revealLines.forEach((el, i) => {
+      el.dataset.delay = i * 100;
+      observer.observe(el);
+    });
+
+    revealFades.forEach((el, i) => {
+      el.dataset.delay = i * 80;
+      observer.observe(el);
+    });
   </script>
 </body>
 </html>
