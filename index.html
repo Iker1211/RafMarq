@@ -254,14 +254,57 @@
     @media (max-width: 860px) {
       .header-trace { display: none; }
     }
+    @media (max-width: 600px) {
+      .header-nav { gap: 0.9rem; }
+      .header-nav a { font-size: 0.56rem; letter-spacing: 0.05em; }
+    }
 
-/* ─── Hero ─── */
+/* ─── Hero Keyframes & Reveals ─── */
+    @keyframes heroReveal {
+      0% {
+        transform: translateY(105%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0%);
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulseBeacon {
+      0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+        box-shadow: 0 0 10px #00E676, 0 0 20px rgba(0,230,118,0.4);
+      }
+      50% {
+        opacity: 0.55;
+        transform: scale(0.85);
+        box-shadow: 0 0 4px #00E676;
+      }
+    }
+
+    @keyframes orangePulse {
+      0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+        box-shadow: 0 0 8px var(--orange-bright);
+      }
+      50% {
+        opacity: 0.5;
+        transform: scale(0.85);
+        box-shadow: 0 0 2px var(--orange-bright);
+      }
+    }
+
+    /* ─── Hero Section ─── */
     .hero {
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: clamp(6.5rem, 12vh, 8.5rem) 0 clamp(3.5rem, 6vh, 5rem);
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(5.2rem, 9vh, 6.8rem) 0 clamp(1.5rem, 2.8vh, 2.5rem);
       position: relative;
       overflow: hidden;
       isolation: isolate;
@@ -287,9 +330,9 @@
       inset: -40px;
       z-index: 0;
       pointer-events: none;
-      opacity: 0.25;
+      opacity: 0.22;
       background:
-        radial-gradient(ellipse 70% 60% at 50% 40%, rgba(198,90,17,0.03) 0%, transparent 70%),
+        radial-gradient(ellipse 70% 60% at 50% 40%, rgba(198,90,17,0.04) 0%, transparent 70%),
         repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(198,90,17,0.018) 59px, rgba(198,90,17,0.018) 60px),
         repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(255,255,255,0.008) 59px, rgba(255,255,255,0.008) 60px);
       animation: schematicDrift 55s linear infinite;
@@ -306,9 +349,10 @@
       z-index: 2;
       pointer-events: none;
       background:
-        radial-gradient(ellipse 65% 55% at 50% 50%, rgba(5,5,5,0.3) 0%, rgba(5,5,5,0.85) 100%),
-        radial-gradient(ellipse 60% 45% at 20% 35%, rgba(198,90,17,0.05) 0%, transparent 70%),
-        linear-gradient(180deg, rgba(5,5,5,0.7) 0%, transparent 25%, transparent 75%, rgba(5,5,5,0.98) 100%);
+        radial-gradient(ellipse 65% 55% at 50% 50%, rgba(5,5,5,0.2) 0%, rgba(5,5,5,0.88) 100%),
+        radial-gradient(ellipse 50% 40% at 18% 30%, rgba(198,90,17,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 45% 45% at 82% 40%, rgba(232,108,26,0.05) 0%, transparent 70%),
+        linear-gradient(180deg, rgba(5,5,5,0.6) 0%, transparent 20%, transparent 80%, rgba(5,5,5,0.98) 100%);
     }
 
     .hero-container {
@@ -316,39 +360,47 @@
       z-index: 2;
       display: flex;
       flex-direction: column;
-      gap: clamp(2.2rem, 4.5vh, 3.8rem);
+      justify-content: space-between;
+      flex-grow: 1;
+      gap: clamp(1.4rem, 2.8vh, 2.4rem);
     }
 
-    /* Hero Eyebrow / Live Indicator */
-    .hero-eyebrow {
+    /* ─── Hero HUD Eyebrow Rail ─── */
+    .hero-hud-rail {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 1.25rem;
       flex-wrap: wrap;
     }
+
+    .hero-status-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
     .hero-status-pill {
       display: inline-flex;
       align-items: center;
       gap: 0.6rem;
-      padding: 0.4rem 0.9rem;
+      padding: 0.35rem 0.85rem;
       border-radius: 999px;
       background: rgba(198,90,17,0.12);
       border: 1px solid rgba(232,108,26,0.3);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
     }
+
     .status-indicator-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: #00E676;
-      box-shadow: 0 0 10px #00E676, 0 0 20px rgba(0,230,118,0.5);
-      animation: statusPulse 2s ease-in-out infinite;
+      animation: pulseBeacon 2s ease-in-out infinite;
     }
-    @keyframes statusPulse {
-      0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 8px #00E676; }
-      50% { opacity: 0.5; transform: scale(0.85); box-shadow: 0 0 2px #00E676; }
-    }
+
     .status-text {
       font-family: 'Space Mono', monospace;
       font-size: var(--fs-label);
@@ -357,7 +409,8 @@
       color: var(--white);
       font-weight: 700;
     }
-    .hero-standard-tag {
+
+    .hero-standards-badge {
       font-family: 'Space Mono', monospace;
       font-size: var(--fs-label);
       text-transform: uppercase;
@@ -365,71 +418,117 @@
       color: var(--text-muted);
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.6rem;
     }
-    .hero-standard-tag .tag-divider {
-      color: rgba(255,255,255,0.2);
+    .hero-standards-badge .tag-divider {
+      color: rgba(255,255,255,0.25);
     }
 
-    /* Hero Main Grid (2-column layout) */
+    .hero-hotline-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.35rem 0.85rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-active);
+      border-radius: 999px;
+      text-decoration: none;
+      transition: all 0.3s var(--ease-out);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .hero-hotline-chip:hover {
+      background: rgba(198,90,17,0.15);
+      border-color: var(--orange-bright);
+    }
+    .hotline-chip-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--orange-bright);
+      box-shadow: 0 0 6px var(--orange-bright);
+      animation: orangePulse 2s infinite;
+    }
+    .hotline-chip-label {
+      font-family: 'Space Mono', monospace;
+      font-size: var(--fs-label);
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .hotline-chip-num {
+      font-family: 'Space Mono', monospace;
+      font-size: var(--fs-label);
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── Hero Main Grid ─── */
     .hero-main-grid {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: clamp(2rem, 5vw, 4.5rem);
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: clamp(1.75rem, 3.5vw, 3.25rem);
       align-items: center;
     }
 
-    /* Left Column: Primary Typography & CTAs */
+    /* Left Column: Primary Content */
     .hero-primary {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: clamp(1.1rem, 2vh, 1.5rem);
+      max-width: 580px;
     }
+
     .hero-title {
       font-family: 'Playfair Display', serif;
       font-weight: 900;
       color: var(--white);
-      font-size: clamp(3.2rem, 6.8vw, 6.4rem);
+      font-size: clamp(2.4rem, 4.3vw, 4.1rem);
       letter-spacing: var(--tracking-display);
-      line-height: 0.92;
+      line-height: 1.04;
       margin: 0;
     }
+
     .hero-title-line {
       display: block;
       overflow: hidden;
     }
+
     .hero-title-line span {
       display: block;
       transform: translateY(105%);
       will-change: transform;
     }
+
     .hero-title-line span.visible {
-      animation: heroReveal 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: heroReveal 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
+
     .hero-title-accent {
       color: var(--orange-bright) !important;
       font-style: italic;
     }
 
     .hero-lead {
-      font-size: clamp(1rem, 1.35vw, 1.18rem);
-      color: var(--text-body);
-      line-height: 1.7;
-      max-width: 580px;
+      font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+      color: rgba(255,255,255,0.72);
+      line-height: 1.65;
       font-weight: 300;
     }
 
-    /* Hero Actions */
-    .hero-actions {
+    /* Actions & Trust Cluster */
+    .hero-actions-cluster {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
-      margin-top: 0.5rem;
+      gap: 1rem;
+      margin-top: 0.15rem;
     }
+
     .hero-btn-group {
       display: flex;
       align-items: center;
-      gap: 1.25rem;
+      gap: 1rem;
       flex-wrap: wrap;
     }
 
@@ -463,103 +562,101 @@
       background: rgba(198,90,17,0.12);
     }
 
-    .hero-hotline {
+    .hero-trust-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      font-family: 'DM Sans', sans-serif;
+    }
+    .trust-item {
       display: inline-flex;
       align-items: center;
-      gap: 0.85rem;
-      padding: 0.65rem 1.15rem;
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      width: fit-content;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      transition: border-color 0.3s var(--ease-out);
+      gap: 0.4rem;
     }
-    .hero-hotline:hover {
-      border-color: rgba(232,108,26,0.35);
-    }
-    .hotline-icon {
+    .trust-item-icon {
       color: var(--orange-bright);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-size: 0.85rem;
     }
-    .hotline-details {
-      display: flex;
-      flex-direction: column;
-      gap: 0.1rem;
+    .trust-item-text {
+      color: rgba(255,255,255,0.65);
     }
-    .hotline-label {
-      font-family: 'Space Mono', monospace;
-      font-size: var(--fs-micro);
-      color: var(--text-muted);
-      letter-spacing: var(--tracking-label);
-    }
-    .hotline-number {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--white);
-      text-decoration: none;
-      transition: color 0.2s;
-      letter-spacing: 0.02em;
-    }
-    .hotline-number:hover {
-      color: var(--orange-bright);
+    .trust-divider {
+      color: rgba(255,255,255,0.2);
     }
 
-    /* Right Column: Telemetry Glass Panel */
+    /* ─── Right Column: Engineering Telemetry Cockpit ─── */
     .hero-telemetry-panel {
       position: relative;
     }
+
     .telemetry-card-glass {
-      background: rgba(13,13,13,0.78);
+      background: rgba(13,13,13,0.82);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(198,90,17,0.22);
-      border-radius: 6px;
-      padding: clamp(1.4rem, 2.5vw, 2rem);
+      border: 1px solid rgba(198,90,17,0.24);
+      border-radius: 8px;
+      padding: clamp(1.2rem, 1.8vw, 1.6rem);
       position: relative;
       overflow: hidden;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.09);
     }
+
     .telemetry-card-glass::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 2px;
-      background: linear-gradient(90deg, transparent, var(--orange-bright) 40%, var(--orange) 75%, transparent);
+      background: linear-gradient(90deg, transparent, var(--orange-bright) 35%, var(--orange) 70%, transparent);
     }
+
+    /* Tech corner brackets */
+    .telemetry-card-glass::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 12px; height: 12px;
+      border-bottom: 2px solid var(--orange-bright);
+      border-right: 2px solid var(--orange-bright);
+      opacity: 0.7;
+    }
+
     .telemetry-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 1.25rem;
+      padding-bottom: 0.85rem;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 1.25rem;
+      margin-bottom: 0.85rem;
     }
+
     .telemetry-title-group {
       display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
+      align-items: center;
+      gap: 0.65rem;
     }
+
     .telemetry-chip {
       font-family: 'Space Mono', monospace;
       font-size: var(--fs-micro);
       color: var(--orange-bright);
       background: rgba(198,90,17,0.15);
-      padding: 0.15rem 0.45rem;
+      padding: 0.2rem 0.5rem;
       border-radius: 2px;
-      width: fit-content;
+      border: 1px solid rgba(232,108,26,0.25);
       letter-spacing: var(--tracking-stat);
+      font-weight: 700;
     }
+
     .telemetry-title {
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 500;
       color: var(--text-body);
     }
+
     .telemetry-live-badge {
       display: flex;
       align-items: center;
@@ -567,55 +664,61 @@
       font-family: 'Space Mono', monospace;
       font-size: var(--fs-micro);
       color: var(--white);
-      background: rgba(0,0,0,0.4);
-      padding: 0.35rem 0.65rem;
+      background: rgba(0,0,0,0.5);
+      padding: 0.25rem 0.55rem;
       border-radius: 4px;
       border: 1px solid var(--border);
     }
+
     .telemetry-live-dot {
       width: 6px;
       height: 6px;
       border-radius: 50%;
       background: var(--orange-bright);
       box-shadow: 0 0 8px var(--orange-bright);
-      animation: indicatorPulse 2s ease-in-out infinite;
+      animation: orangePulse 2s ease-in-out infinite;
     }
 
     .telemetry-features {
       display: flex;
       flex-direction: column;
-      gap: 0.85rem;
+      gap: 0.65rem;
     }
+
     .telemetry-item {
       display: flex;
-      gap: 1.1rem;
-      padding: 1rem 1.15rem;
+      gap: 0.9rem;
+      padding: 0.75rem 0.95rem;
       background: rgba(255,255,255,0.02);
       border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 4px;
+      border-radius: 6px;
       transition: all 0.3s var(--ease-out);
       cursor: none;
       position: relative;
     }
+
     .telemetry-item:hover {
       background: rgba(198,90,17,0.09);
-      border-color: rgba(232,108,26,0.35);
+      border-color: rgba(232,108,26,0.4);
       transform: translateX(4px);
     }
+
     .telemetry-item-num {
       font-family: 'Space Mono', monospace;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: var(--orange);
       line-height: 1.2;
-      padding-top: 2px;
+      padding-top: 1px;
     }
+
     .telemetry-item-content {
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 0.3rem;
+      gap: 0.15rem;
     }
+
     .telemetry-item-head {
       display: flex;
       justify-content: space-between;
@@ -623,140 +726,184 @@
       gap: 0.5rem;
       flex-wrap: wrap;
     }
+
     .telemetry-item-title {
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.96rem;
+      font-size: 0.9rem;
       font-weight: 700;
       color: var(--white);
       margin: 0;
     }
+
     .telemetry-item-tag {
       font-family: 'Space Mono', monospace;
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       color: var(--orange-bright);
       letter-spacing: var(--tracking-stat);
     }
+
     .telemetry-item-desc {
-      font-size: 0.82rem;
+      font-size: 0.76rem;
       color: var(--text-muted);
-      line-height: 1.5;
+      line-height: 1.4;
       margin: 0;
     }
 
     .telemetry-footer {
-      margin-top: 1.25rem;
-      padding-top: 1.1rem;
+      margin-top: 0.85rem;
+      padding-top: 0.75rem;
       border-top: 1px solid var(--border);
     }
+
     .telemetry-stat-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 0.5rem;
+      gap: 0.4rem;
       text-align: center;
     }
+
     .stat-mini {
       display: flex;
       flex-direction: column;
-      gap: 0.2rem;
+      gap: 0.12rem;
     }
+
     .stat-mini-label {
       font-family: 'Space Mono', monospace;
-      font-size: 0.54rem;
+      font-size: 0.52rem;
       color: var(--text-muted);
       letter-spacing: 0.05em;
     }
+
     .stat-mini-val {
       font-family: 'Space Mono', monospace;
-      font-size: 0.76rem;
+      font-size: 0.74rem;
       color: var(--white);
       font-weight: 700;
     }
+
     .stat-mini-val.highlight {
       color: var(--orange-bright);
     }
 
-    /* Hero Bottom Bar & Metrics */
+    /* ─── Hero Bottom Bar & Metrics Ribbon ─── */
     .hero-bottom-bar {
-      padding-top: clamp(1.8rem, 3.5vh, 2.8rem);
+      padding-top: clamp(0.85rem, 1.8vh, 1.35rem);
       border-top: 1px solid rgba(255,255,255,0.08);
       width: 100%;
     }
+
     .hero-metrics-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: clamp(1.25rem, 3vw, 3rem);
+      gap: clamp(0.75rem, 1.8vw, 1.5rem);
     }
+
     .hero-metric-item {
       display: flex;
       align-items: center;
-      gap: 1.15rem;
-      position: relative;
+      gap: 0.85rem;
+      padding: 0.75rem 1rem;
+      background: rgba(255,255,255,0.018);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 6px;
+      transition: all 0.3s var(--ease-out);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
-    .hero-metric-item:not(:last-child)::after {
-      content: '';
-      position: absolute;
-      right: 0;
-      top: 15%;
-      height: 70%;
-      width: 1px;
-      background: var(--border);
+
+    .hero-metric-item:hover {
+      background: rgba(198,90,17,0.08);
+      border-color: rgba(232,108,26,0.3);
+      transform: translateY(-2px);
     }
+
     .metric-val-wrap {
       font-family: 'Space Mono', monospace;
-      font-size: clamp(2rem, 3vw, 2.6rem);
+      font-size: clamp(1.6rem, 2.2vw, 2rem);
       font-weight: 700;
       color: var(--orange);
       line-height: 1;
       display: flex;
       align-items: baseline;
     }
+
     .metric-symbol {
       color: var(--orange-bright);
       font-size: 0.85em;
       margin-left: 1px;
     }
+
     .metric-info {
       display: flex;
       flex-direction: column;
-      gap: 0.2rem;
+      gap: 0.12rem;
     }
+
     .metric-title {
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.92rem;
+      font-size: 0.86rem;
       font-weight: 700;
       color: var(--white);
       line-height: 1.2;
     }
+
     .metric-sub {
-      font-size: 0.76rem;
+      font-size: 0.72rem;
       color: var(--text-muted);
-      line-height: 1.3;
+      line-height: 1.25;
     }
 
-    /* Responsive adjustments */
+    /* Responsive Breakpoints */
     @media (max-width: 992px) {
       .hero-main-grid {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 2.5rem;
       }
       .hero-metric-item:not(:last-child)::after {
         display: none;
       }
     }
+
     @media (max-width: 860px) {
       .hero {
-        padding-top: 6.5rem;
-        padding-bottom: 3rem;
+        padding-top: 5.5rem;
+        padding-bottom: 2.2rem;
+      }
+      .hero-hud-rail {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
       }
       .hero-metrics-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 2rem 1.5rem;
+        gap: 1.5rem 1.25rem;
       }
     }
+
     @media (max-width: 540px) {
-      .hero-metrics-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+      .hero {
+        padding-top: 5rem;
+        padding-bottom: 2rem;
+      }
+      .hero-hud-rail {
+        gap: 0.6rem;
+      }
+      .hero-status-pill {
+        padding: 0.28rem 0.65rem;
+      }
+      .status-text {
+        font-size: 0.56rem;
+      }
+      .hero-standards-badge {
+        font-size: 0.54rem;
+        line-height: 1.4;
+      }
+      .hero-hotline-chip {
+        padding: 0.3rem 0.75rem;
+      }
+      .hero-title {
+        font-size: clamp(2.3rem, 9.5vw, 3rem);
       }
       .hero-btn-group {
         flex-direction: column;
@@ -766,9 +913,18 @@
         justify-content: center;
         width: 100%;
       }
+      .hero-metrics-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+      .telemetry-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
       .telemetry-stat-row {
         grid-template-columns: repeat(2, 1fr);
-        gap: 0.75rem 0.5rem;
+        gap: 0.6rem 0.4rem;
       }
     }
 
@@ -1054,16 +1210,23 @@
     <!-- Main Content Container -->
     <div class="container hero-container">
 
-      <!-- Top Eyebrow: Live System Status & Standards -->
-      <div class="hero-eyebrow reveal-fade">
-        <div class="hero-status-pill">
-          <span class="status-indicator-dot"></span>
-          <span class="status-text">SERVICIO TÉCNICO DISPONIBLE EN CUENCA & AZUAY</span>
+      <!-- Top HUD Rail: Live System Status & Standards -->
+      <div class="hero-hud-rail reveal-fade">
+        <div class="hero-status-group">
+          <div class="hero-status-pill">
+            <span class="status-indicator-dot"></span>
+            <span class="status-text">SERVICIO TÉCNICO DISPONIBLE EN CUENCA & AZUAY</span>
+          </div>
+          <div class="hero-standards-badge">
+            <span>/ INGENIERÍA ELÉCTRICA & ELECTRÓNICA DE PRECISIÓN · NORMAS NEC</span>
+          </div>
         </div>
-        <div class="hero-standard-tag">
-          <span class="tag-divider">/</span>
-          <span>INGENIERÍA ELÉCTRICA & ELECTRÓNICA DE PRECISIÓN</span>
-        </div>
+
+        <a href="tel:+593960662445" class="hero-hotline-chip magnetic-target">
+          <span class="hotline-chip-dot"></span>
+          <span class="hotline-chip-label">24/7 Urgencias:</span>
+          <span class="hotline-chip-num">+593 96 066 2445</span>
+        </a>
       </div>
 
       <!-- Main 2-Column Industrial Grid -->
@@ -1072,8 +1235,7 @@
         <!-- Left Column: Primary Typography, Value Proposition & Actions -->
         <div class="hero-primary">
           <h1 class="hero-title">
-            <span class="hero-title-line reveal-line"><span>Soluciones</span></span>
-            <span class="hero-title-line reveal-line"><span>Eléctricas</span></span>
+            <span class="hero-title-line reveal-line"><span>Soluciones Eléctricas</span></span>
             <span class="hero-title-line reveal-line"><span class="hero-title-accent">& Electrónicas</span></span>
           </h1>
 
@@ -1081,8 +1243,8 @@
             Diagnóstico avanzado, diseño de redes e instalación certificada para hogares, edificios residenciales e industria. Garantizamos continuidad operativa, seguridad técnica y respuesta inmediata cuando la energía no puede fallar.
           </p>
 
-          <!-- Action Buttons & Direct Emergency Hotline -->
-          <div class="hero-actions reveal-fade">
+          <!-- Actions & Trust Cluster -->
+          <div class="hero-actions-cluster reveal-fade">
             <div class="hero-btn-group">
               <a href="https://wa.me/593960662445/?text=Hola%20RafMarq,%20necesito%20asistencia%20t%C3%A9cnica%20para%20un%20proyecto." 
                  class="btn btn--primary magnetic-target" 
@@ -1098,15 +1260,18 @@
               </a>
             </div>
 
-            <div class="hero-hotline">
-              <div class="hotline-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                </svg>
+            <div class="hero-trust-bar">
+              <div class="trust-item">
+                <span class="trust-item-icon">⚡</span>
+                <span class="trust-item-text">Respuesta técnica estimada &lt; 15 min</span>
               </div>
-              <div class="hotline-details">
-                <span class="hotline-label">EMERGENCIAS TÉCNICAS 24/7</span>
-                <a href="tel:+593960662445" class="hotline-number">+593 96 066 2445</a>
+              <span class="trust-divider">•</span>
+              <div class="trust-item">
+                <span class="trust-item-text">Residencial, Edificios e Industria</span>
+              </div>
+              <span class="trust-divider">•</span>
+              <div class="trust-item">
+                <span class="trust-item-text">Garantía certificada</span>
               </div>
             </div>
           </div>
@@ -1147,7 +1312,7 @@
                 <div class="telemetry-item-content">
                   <div class="telemetry-item-head">
                     <h4 class="telemetry-item-title">Seguridad Electrónica & CCTV</h4>
-                    <span class="telemetry-item-tag">HIKVISION IP · ACCESO</span>
+                    <span class="telemetry-item-tag">HIKVISION IP · ACCESOS</span>
                   </div>
                   <p class="telemetry-item-desc">Control biométrico, citofonía para edificios, videovigilancia y automatización de accesos vehiculares.</p>
                 </div>
@@ -1160,7 +1325,7 @@
                     <h4 class="telemetry-item-title">Electromecánica & Bombas</h4>
                     <span class="telemetry-item-tag">HIDRONEUMÁTICO · MOTORES</span>
                   </div>
-                  <p class="telemetry-item-desc">Mantenimiento de bombas de agua, motores industriales, calentadores de piscina y ascensores.</p>
+                  <p class="telemetry-item-desc">Mantenimiento de bombas de agua, motores industriales, calentadores de piscina y tableros de control.</p>
                 </div>
               </div>
 
